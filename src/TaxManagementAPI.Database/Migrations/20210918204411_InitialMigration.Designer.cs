@@ -9,7 +9,7 @@ using TaxManagementAPI.Database;
 namespace TaxManagementAPI.Database.Migrations
 {
     [DbContext(typeof(TaxContext))]
-    [Migration("20210918185249_InitialMigration")]
+    [Migration("20210918204411_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,10 +40,10 @@ namespace TaxManagementAPI.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FromTime")
+                    b.Property<DateTime>("FromDate")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("ToTime")
+                    b.Property<DateTime?>("ToDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("TaxDateId");

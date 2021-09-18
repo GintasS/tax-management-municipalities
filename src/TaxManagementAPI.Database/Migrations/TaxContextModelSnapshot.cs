@@ -38,10 +38,10 @@ namespace TaxManagementAPI.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FromTime")
+                    b.Property<DateTime>("FromDate")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("ToTime")
+                    b.Property<DateTime?>("ToDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("TaxDateId");

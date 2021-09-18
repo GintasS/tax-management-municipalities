@@ -27,8 +27,8 @@ namespace TaxManagementAPI.Database.Migrations
                 {
                     TaxDateId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    FromTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ToTime = table.Column<DateTime>(type: "datetime", nullable: true)
+                    FromDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ToDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
