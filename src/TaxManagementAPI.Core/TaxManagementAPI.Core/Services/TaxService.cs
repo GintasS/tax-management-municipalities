@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TaxManagementAPI.Core.Extensions;
 using TaxManagementAPI.Core.Interfaces;
@@ -10,7 +6,6 @@ using TaxManagementAPI.Core.Models;
 using TaxManagementAPI.Core.Models.Requests;
 using TaxManagementAPI.Core.Models.Responses;
 using TaxManagementAPI.Database;
-using TaxManagementAPI.Database.Entities;
 
 namespace TaxManagementAPI.Core.Services
 {
