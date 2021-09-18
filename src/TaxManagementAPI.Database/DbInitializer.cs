@@ -50,44 +50,44 @@ namespace TaxManagementAPI.Database
                 new()
                 {
                     TaxDateId = 1,
-                    FromTime = new DateTime(2021, 1, 1),
-                    ToTime = new DateTime(2021, 12, 31)
+                    FromDate = new DateTime(2021, 1, 1),
+                    ToDate = new DateTime(2021, 12, 31)
                 },
                 new()
                 {
                     TaxDateId = 2,
-                    FromTime = new DateTime(2021, 5, 1),
-                    ToTime = new DateTime(2021, 5, 31)
+                    FromDate = new DateTime(2021, 5, 1),
+                    ToDate = new DateTime(2021, 5, 31)
                 },
                 new()
                 {
                     TaxDateId = 3,
-                    FromTime = new DateTime(2021, 1, 1),
-                    ToTime = null
+                    FromDate = new DateTime(2021, 1, 1),
+                    ToDate = null
                 },
                 new()
                 {
                     TaxDateId = 4,
-                    FromTime = new DateTime(2021, 12, 25),
-                    ToTime = null
+                    FromDate = new DateTime(2021, 12, 25),
+                    ToDate = null
                 },
                 new()
                 {
                     TaxDateId = 5,
-                    FromTime = new DateTime(2021, 3, 1),
-                    ToTime = new DateTime(2021, 3, 8)
+                    FromDate = new DateTime(2021, 3, 1),
+                    ToDate = new DateTime(2021, 3, 8)
                 },
                 new()
                 {
                     TaxDateId = 6,
-                    FromTime = new DateTime(2021, 9, 18),
-                    ToTime = new DateTime(2021, 3, 25)
+                    FromDate = new DateTime(2021, 9, 18),
+                    ToDate = new DateTime(2021, 3, 25)
                 },
                 new()
                 {
                     TaxDateId = 7,
-                    FromTime = new DateTime(2021, 9, 18),
-                    ToTime = new DateTime(2021, 3, 25)
+                    FromDate = new DateTime(2021, 9, 18),
+                    ToDate = new DateTime(2021, 3, 25)
                 }
             };
 
