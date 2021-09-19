@@ -2,6 +2,6 @@
 {
     public class NewSingleTaxResponse : TaxModel
     {
-        public int TaxId { get; set; }
+        public new int TaxId { get; set; }
     }
 }
