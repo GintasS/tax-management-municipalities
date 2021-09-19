@@ -43,6 +43,7 @@ namespace TaxManagementAPI.Core
         private void RegisterServices(IServiceCollection services)
         {
             services.AddScoped<ITaxService, TaxService>();
+            services.AddScoped<IMunicipalityService, MunicipalityService>();
 
             var appSettings = Configuration.GetSection("ApplicationSettings");
             services.Configure<ApplicationSettings>(appSettings);
