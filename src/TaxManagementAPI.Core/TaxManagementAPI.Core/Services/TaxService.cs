@@ -1,11 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using TaxManagementAPI.Core.Extensions;
 using TaxManagementAPI.Core.Interfaces;
 using TaxManagementAPI.Core.Models;
 using TaxManagementAPI.Core.Models.Requests;
 using TaxManagementAPI.Core.Models.Responses;
 using TaxManagementAPI.Database;
+using TaxManagementAPI.Database.Entities;
 
 namespace TaxManagementAPI.Core.Services
 {
@@ -18,13 +22,18 @@ namespace TaxManagementAPI.Core.Services
             _context = context;
         }
 
-        public TaxModel FindSingletTax(string municipalityName)
+        private IIncludableQueryable<TaxEntity, TaxRateEntity> GetAllTaxIncludes()
         {
-            var taxEntity = _context.TaxEntities
+            return _context.TaxEntities
                 .Include(x => x.MunicipalityEntity)
                 .Include(x => x.TaxDateEntity)
-                .Include(x => x.TaxRateEntity)
-                .SingleOrDefault(x => x.MunicipalityEntity.Name == municipalityName);
+                .Include(x => x.TaxRateEntity);
+        }
+
+        public TaxModel FindSingleTax(int taxId)
+        {
+            var taxEntity = GetAllTaxIncludes()
+                .SingleOrDefault(x => x.TaxId == taxId);
 
             if (taxEntity == null)
             {
@@ -41,19 +50,12 @@ namespace TaxManagementAPI.Core.Services
             };
         }
 
-        public MunicipalityTaxesResponse GetAllTaxesForMunicipality(MunicipalityTaxesRequest request)
+        public MunicipalityTaxesResponse GetAllTaxes(string municipalityName, DateTime queryDate)
         {
-            var municipality = _context.MunicipalityEntities
-                .Include(x => x.TaxEntities)
-                .SingleOrDefault(x => x.Name != request.MunicipalityName);
-
-            if (municipality == null)
-            {
-                return null;
-            }
-
-            var filteredTaxes = municipality.TaxEntities
-                .Where(entity => entity.TaxDateEntity.FromDate.IsBetweenDate(entity.TaxDateEntity.FromDate, entity.TaxDateEntity.ToDate))
+            var filteredTaxes = GetAllTaxIncludes()
+                .ToList()
+                .Where(entity => entity.MunicipalityEntity.Name == municipalityName && 
+                                 queryDate.IsBetweenDate(entity.TaxDateEntity.FromDate, entity.TaxDateEntity.ToDate))
                 .Select(entity => new TaxModel
                 {
                     Type = entity.Type,
@@ -61,30 +63,36 @@ namespace TaxManagementAPI.Core.Services
                     FromDate = entity.TaxDateEntity.FromDate,
                     ToDate = entity.TaxDateEntity.ToDate,
                     Rate = entity.TaxRateEntity.Rate
-                }).ToList();
+                });
 
             return new MunicipalityTaxesResponse
             {
-                Date = request.Date,
-                MunicipalityName = request.MunicipalityName,
+                Date = queryDate,
+                MunicipalityName = municipalityName,
                 Taxes = filteredTaxes
             };
         }
 
+        public bool MunicipalityExists(string municipalityName)
+        {
+            return _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName) != null;
+        }
+
         public UpdateSingleTaxResponse UpdateSingleTax(UpdateSingleTaxRequest request)
         {
-            var taxEntity = _context.TaxEntities.SingleOrDefault(x => x.TaxId == request.TaxId);
+            var taxEntity = GetAllTaxIncludes()
+                .SingleOrDefault(x => x.TaxId == request.TaxId);
 
             if (taxEntity == null)
             {
                 return null;
             }
 
-            taxEntity.Type = request.Tax.Type;
-            taxEntity.MunicipalityEntity.Name = request.Tax.MunicipalityName;
-            taxEntity.TaxDateEntity.FromDate = request.Tax.FromDate;
-            taxEntity.TaxDateEntity.ToDate = request.Tax.ToDate;
-            taxEntity.TaxRateEntity.Rate = request.Tax.Rate;
+            taxEntity.Type = request.Type;
+            taxEntity.MunicipalityEntity.Name = request.MunicipalityName;
+            taxEntity.TaxDateEntity.FromDate = request.FromDate;
+            taxEntity.TaxDateEntity.ToDate = request.ToDate;
+            taxEntity.TaxRateEntity.Rate = request.Rate;
 
             _context.SaveChanges();
 
