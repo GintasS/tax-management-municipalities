@@ -80,12 +80,6 @@ I'm going to update this repository from https://github.com/microsoft/Git-Creden
 > **[?]**
 > Please provide the technologies that are used in the project.
 
-## Requirements
-|Requirement|Status|crossed|
-|---|---|---|
-|&check;|_|&cross;|
-
-
 ## Getting Started
 
 ### Prerequisites
