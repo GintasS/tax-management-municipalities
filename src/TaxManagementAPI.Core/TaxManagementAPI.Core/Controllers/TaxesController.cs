@@ -21,7 +21,7 @@ namespace TaxManagementAPI.Core.Controllers
 
         [ProducesResponseType(typeof(MunicipalityTaxesResponse), 200)]
         [ProducesResponseType(404)]
-        [Route("{municipalityName}/{queryDate}")]
+        [Route("{municipalityName}/{queryDate:datetime}")]
         [HttpGet]
         public IActionResult GetAllTaxes(string municipalityName, DateTime queryDate)
         {
@@ -37,7 +37,7 @@ namespace TaxManagementAPI.Core.Controllers
 
         [ProducesResponseType(typeof(UpdateSingleTaxResponse), 200)]
         [ProducesResponseType(404)]
-        [Route("{taxId}")]
+        [Route("{taxId:int}")]
         [HttpPatch]
         public IActionResult UpdateSingleTax(int taxId, UpdateSingleTaxRequest request)
         {

@@ -9,6 +9,5 @@ namespace TaxManagementAPI.Database.Entities
         public int MunicipalityId { get; set; }
         [Required]
         public string Name { get; set; }
-        public List<TaxEntity> TaxEntities { get; set; }
     }
 }

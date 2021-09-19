@@ -41,11 +41,11 @@ namespace TaxManagementAPI.Database
                 new()
                 {
                     Rate = 0.3
-                },
+                }
             };
 
             // Municipality Date Entities.
-            var taxeDates = new List<TaxDateEntity>
+            var taxDates = new List<TaxDateEntity>
             {
                 new()
                 {
@@ -121,7 +121,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 1,
                     Type = TaxType.Periodic,
                     MunicipalityEntity = municipalities[0],
-                    TaxDateEntity = taxeDates[0],
+                    TaxDateEntity = taxDates[0],
                     TaxRateEntity = taxRates[0]
                 },
                 new()
@@ -129,7 +129,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 2,
                     Type = TaxType.Periodic,
                     MunicipalityEntity = municipalities[0],
-                    TaxDateEntity = taxeDates[1],
+                    TaxDateEntity = taxDates[1],
                     TaxRateEntity = taxRates[1]
                 },
                 new()
@@ -137,7 +137,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 3,
                     Type = TaxType.Single,
                     MunicipalityEntity = municipalities[0],
-                    TaxDateEntity = taxeDates[2],
+                    TaxDateEntity = taxDates[2],
                     TaxRateEntity = taxRates[2]
                 },
                 new()
@@ -145,7 +145,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 4,
                     Type = TaxType.Single,
                     MunicipalityEntity = municipalities[0],
-                    TaxDateEntity = taxeDates[3],
+                    TaxDateEntity = taxDates[3],
                     TaxRateEntity = taxRates[3]
                 },
                 new()
@@ -153,7 +153,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 5,
                     Type = TaxType.Periodic,
                     MunicipalityEntity = municipalities[1],
-                    TaxDateEntity = taxeDates[4],
+                    TaxDateEntity = taxDates[4],
                     TaxRateEntity = taxRates[4]
                 },
                 new()
@@ -161,7 +161,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 6,
                     Type = TaxType.Periodic,
                     MunicipalityEntity = municipalities[1],
-                    TaxDateEntity = taxeDates[5],
+                    TaxDateEntity = taxDates[5],
                     TaxRateEntity = taxRates[5]
                 },
                 new()
@@ -169,7 +169,7 @@ namespace TaxManagementAPI.Database
                     TaxId = 7,
                     Type = TaxType.Periodic,
                     MunicipalityEntity = municipalities[2],
-                    TaxDateEntity = taxeDates[6],
+                    TaxDateEntity = taxDates[6],
                     TaxRateEntity = taxRates[6]
                 }
             };
@@ -180,7 +180,7 @@ namespace TaxManagementAPI.Database
             }
             
 
-            foreach (var taxDate in taxeDates)
+            foreach (var taxDate in taxDates)
             {
                 context.TaxDateEntities.Add(taxDate);
             }

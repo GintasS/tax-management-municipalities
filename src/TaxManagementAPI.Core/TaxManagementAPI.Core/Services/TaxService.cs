@@ -15,12 +15,10 @@ namespace TaxManagementAPI.Core.Services
     public class TaxService : ITaxService
     {
         private readonly TaxContext _context;
-        private IMunicipalityService _municipalityService;
 
-        public TaxService(TaxContext context, IMunicipalityService municipalityService)
+        public TaxService(TaxContext context)
         {
             _context = context;
-            _municipalityService = municipalityService;
         }
 
         private IIncludableQueryable<TaxEntity, TaxRateEntity> GetAllTaxIncludes()
@@ -51,7 +49,7 @@ namespace TaxManagementAPI.Core.Services
                 TaxDateModel = new TaxDateModel
                 {
                     FromDate = taxEntity.TaxDateEntity.FromDate,
-                    ToDate = taxEntity.TaxDateEntity.ToDate,
+                    ToDate = taxEntity.TaxDateEntity.ToDate
                 },
                 TaxRateModel = new TaxRateModel
                 {
@@ -76,7 +74,7 @@ namespace TaxManagementAPI.Core.Services
                     TaxDateModel = new TaxDateModel
                     {
                         FromDate = entity.TaxDateEntity.FromDate,
-                        ToDate = entity.TaxDateEntity.ToDate,
+                        ToDate = entity.TaxDateEntity.ToDate
                     },
                     TaxRateModel = new TaxRateModel
                     {
@@ -120,7 +118,7 @@ namespace TaxManagementAPI.Core.Services
                 TaxDateModel = new TaxDateModel
                 {
                     FromDate = taxEntity.TaxDateEntity.FromDate,
-                    ToDate = taxEntity.TaxDateEntity.ToDate,
+                    ToDate = taxEntity.TaxDateEntity.ToDate
                 },
                 TaxRateModel = new TaxRateModel
                 {
@@ -159,7 +157,7 @@ namespace TaxManagementAPI.Core.Services
                 TaxDateModel = new TaxDateModel
                 {
                     FromDate = newTax.TaxDateEntity.FromDate,
-                    ToDate = newTax.TaxDateEntity.ToDate,
+                    ToDate = newTax.TaxDateEntity.ToDate
                 },
                 TaxRateModel = new TaxRateModel
                 {
