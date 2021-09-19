@@ -11,6 +11,5 @@ namespace TaxManagementAPI.Core.Interfaces
         public MunicipalityTaxesResponse GetAllTaxes(string municipalityName, DateTime queryDate);
         public UpdateSingleTaxResponse UpdateSingleTax(UpdateSingleTaxRequest request);
         public TaxModel FindSingleTax(int taxId);
-        public bool MunicipalityExists(string municipalityName);
     }
 }
