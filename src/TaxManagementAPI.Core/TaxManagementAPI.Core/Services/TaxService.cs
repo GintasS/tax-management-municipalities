@@ -16,10 +16,12 @@ namespace TaxManagementAPI.Core.Services
     public class TaxService : ITaxService
     {
         private readonly TaxContext _context;
+        private IMunicipalityService _municipalityService;
 
-        public TaxService(TaxContext context)
+        public TaxService(TaxContext context, IMunicipalityService municipalityService)
         {
             _context = context;
+            _municipalityService = municipalityService;
         }
 
         private IIncludableQueryable<TaxEntity, TaxRateEntity> GetAllTaxIncludes()
@@ -43,10 +45,19 @@ namespace TaxManagementAPI.Core.Services
             return new TaxModel
             {
                 Type = taxEntity.Type,
-                MunicipalityName = taxEntity.MunicipalityEntity.Name,
-                FromDate = taxEntity.TaxDateEntity.FromDate,
-                ToDate = taxEntity.TaxDateEntity.ToDate,
-                Rate = taxEntity.TaxRateEntity.Rate
+                MunicipalityModel = new MunicipalityModel
+                {
+                    MunicipalityName = taxEntity.MunicipalityEntity.Name
+                },
+                TaxDateModel = new TaxDateModel
+                {
+                    FromDate = taxEntity.TaxDateEntity.FromDate,
+                    ToDate = taxEntity.TaxDateEntity.ToDate,
+                },
+                TaxRateModel = new TaxRateModel
+                {
+                    Rate = taxEntity.TaxRateEntity.Rate
+                }
             };
         }
 
@@ -59,10 +70,19 @@ namespace TaxManagementAPI.Core.Services
                 .Select(entity => new TaxModel
                 {
                     Type = entity.Type,
-                    MunicipalityName = entity.MunicipalityEntity.Name,
-                    FromDate = entity.TaxDateEntity.FromDate,
-                    ToDate = entity.TaxDateEntity.ToDate,
-                    Rate = entity.TaxRateEntity.Rate
+                    MunicipalityModel = new MunicipalityModel
+                    {
+                        MunicipalityName = entity.MunicipalityEntity.Name
+                    },
+                    TaxDateModel = new TaxDateModel
+                    {
+                        FromDate = entity.TaxDateEntity.FromDate,
+                        ToDate = entity.TaxDateEntity.ToDate,
+                    },
+                    TaxRateModel = new TaxRateModel
+                    {
+                        Rate = entity.TaxRateEntity.Rate
+                    }
                 });
 
             return new MunicipalityTaxesResponse
@@ -77,32 +97,75 @@ namespace TaxManagementAPI.Core.Services
         {
             var taxEntity = GetAllTaxIncludes()
                 .SingleOrDefault(x => x.TaxId == request.TaxId);
+
             if (taxEntity == null)
             {
                 return null;
             }
 
-            var municipalityEntity = _context.MunicipalityEntities.SingleOrDefault(x => x.Name == request.Municipality.MunicipalityName);
-            if (municipalityEntity == null)
-            {
-                return null;
-            }
-
             taxEntity.Type = request.Type;
-            taxEntity.MunicipalityEntity = municipalityEntity;
-            taxEntity.TaxDateEntity.FromDate = request.FromDate;
-            taxEntity.TaxDateEntity.ToDate = request.ToDate;
-            taxEntity.TaxRateEntity.Rate = request.Rate;
+            taxEntity.MunicipalityEntity = request.Municipality;
+            taxEntity.TaxDateEntity.FromDate = request.TaxDateModel.FromDate;
+            taxEntity.TaxDateEntity.ToDate = request.TaxDateModel.ToDate;
+            taxEntity.TaxRateEntity.Rate = request.TaxRateModel.Rate;
 
             _context.SaveChanges();
 
             return new UpdateSingleTaxResponse
             {
                 Type = taxEntity.Type,
-                MunicipalityName = taxEntity.MunicipalityEntity.Name,
-                Rate = taxEntity.TaxRateEntity.Rate,
-                FromDate = taxEntity.TaxDateEntity.FromDate,
-                ToDate = taxEntity.TaxDateEntity.ToDate
+                MunicipalityModel = new MunicipalityModel
+                {
+                    MunicipalityName = taxEntity.MunicipalityEntity.Name
+                },
+                TaxDateModel = new TaxDateModel
+                {
+                    FromDate = taxEntity.TaxDateEntity.FromDate,
+                    ToDate = taxEntity.TaxDateEntity.ToDate,
+                },
+                TaxRateModel = new TaxRateModel
+                {
+                    Rate = taxEntity.TaxRateEntity.Rate
+                }
+            };
+        }
+
+        public NewSingleTaxResponse InsertSingleTax(NewSingleTaxRequest request)
+        {
+            var newTax = _context.TaxEntities.Add(new TaxEntity
+            {
+                Type = request.Type,
+                MunicipalityEntity = request.Municipality,
+                TaxDateEntity = new TaxDateEntity
+                {
+                    FromDate = request.TaxDateModel.FromDate,
+                    ToDate = request.TaxDateModel.ToDate
+                },
+                TaxRateEntity = new TaxRateEntity
+                {
+                    Rate = request.TaxRateModel.Rate
+                }
+            }).Entity;
+
+            _context.SaveChanges();
+
+            return new NewSingleTaxResponse
+            {
+                TaxId = newTax.TaxId,
+                Type = newTax.Type,
+                MunicipalityModel = new MunicipalityModel
+                {
+                    MunicipalityName = newTax.MunicipalityEntity.Name
+                },
+                TaxDateModel = new TaxDateModel
+                {
+                    FromDate = newTax.TaxDateEntity.FromDate,
+                    ToDate = newTax.TaxDateEntity.ToDate,
+                },
+                TaxRateModel = new TaxRateModel
+                {
+                    Rate = newTax.TaxRateEntity.Rate
+                }
             };
         }
     }
