@@ -1,5 +1,4 @@
-﻿using System;
-using TaxManagementAPI.Database.Enums;
+﻿using TaxManagementAPI.Database.Enums;
 
 namespace TaxManagementAPI.Core.Models
 {

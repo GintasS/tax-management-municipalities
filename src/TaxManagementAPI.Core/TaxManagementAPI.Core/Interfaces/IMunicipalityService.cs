@@ -1,5 +1,4 @@
-﻿using TaxManagementAPI.Core.Models;
-using TaxManagementAPI.Database.Entities;
+﻿using TaxManagementAPI.Database.Entities;
 
 namespace TaxManagementAPI.Core.Interfaces
 {
