@@ -98,7 +98,7 @@ namespace TaxManagementAPI.Database.Migrations
             modelBuilder.Entity("TaxManagementAPI.Database.Entities.TaxEntity", b =>
                 {
                     b.HasOne("TaxManagementAPI.Database.Entities.MunicipalityEntity", "MunicipalityEntity")
-                        .WithMany("TaxEntities")
+                        .WithMany()
                         .HasForeignKey("MunicipalityEntityMunicipalityId");
 
                     b.HasOne("TaxManagementAPI.Database.Entities.TaxDateEntity", "TaxDateEntity")
@@ -114,11 +114,6 @@ namespace TaxManagementAPI.Database.Migrations
                     b.Navigation("TaxDateEntity");
 
                     b.Navigation("TaxRateEntity");
-                });
-
-            modelBuilder.Entity("TaxManagementAPI.Database.Entities.MunicipalityEntity", b =>
-                {
-                    b.Navigation("TaxEntities");
                 });
 #pragma warning restore 612, 618
         }
