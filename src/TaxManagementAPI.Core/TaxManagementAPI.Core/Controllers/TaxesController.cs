@@ -15,10 +15,12 @@ namespace TaxManagementAPI.Core.Controllers
     public class TaxesController : ControllerBase
     {
         private readonly ITaxService _taxService;
+        private readonly IMunicipalityService _municipalityService;
 
-        public TaxesController(ITaxService taxService)
+        public TaxesController(ITaxService taxService, IMunicipalityService municipalityService)
         {
             _taxService = taxService;
+            _municipalityService = municipalityService;
         }
 
         [ProducesResponseType(typeof(MunicipalityTaxesResponse), 200)]
@@ -27,7 +29,7 @@ namespace TaxManagementAPI.Core.Controllers
         [HttpGet]
         public IActionResult GetAllTaxes(string municipalityName, DateTime queryDate)
         {
-            var municipalityExists = _taxService.MunicipalityExists(municipalityName);
+            var municipalityExists = _municipalityService.MunicipalityExists(municipalityName);
             if (municipalityExists == false)
             {
                 return NotFound("Tax Entity with the provided Municipality Name was not found");
@@ -49,7 +51,13 @@ namespace TaxManagementAPI.Core.Controllers
                 return NotFound("Tax Entity with the provided TaxId was not found");
             }
 
+            // Create new municipality if needed.
+            var municipality = _municipalityService.CreateNewMunicipalityIfNotExists(request.MunicipalityName);
+
+            // Attach taxId from url and create new(or use existing one) municipality.
             request.TaxId = taxId;
+            request.Municipality = municipality;
+
             var allTaxes = _taxService.UpdateSingleTax(request);
             return Ok(allTaxes);
         }
