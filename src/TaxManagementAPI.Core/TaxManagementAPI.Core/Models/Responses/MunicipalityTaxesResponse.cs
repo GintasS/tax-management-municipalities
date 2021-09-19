@@ -7,6 +7,6 @@ namespace TaxManagementAPI.Core.Models.Responses
     {
         public string MunicipalityName { get; set; }
         public DateTime Date { get; set; }
-        public List<TaxModel> Taxes { get; set; }
+        public IEnumerable<TaxModel> Taxes { get; set; }
     }
 }
