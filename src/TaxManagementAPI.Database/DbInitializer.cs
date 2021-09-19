@@ -80,14 +80,14 @@ namespace TaxManagementAPI.Database
                 new()
                 {
                     TaxDateId = 6,
-                    FromDate = new DateTime(2021, 9, 18),
-                    ToDate = new DateTime(2021, 3, 25)
+                    FromDate = new DateTime(2021, 10, 12),
+                    ToDate = new DateTime(2021, 10, 19)
                 },
                 new()
                 {
                     TaxDateId = 7,
                     FromDate = new DateTime(2021, 9, 18),
-                    ToDate = new DateTime(2021, 3, 25)
+                    ToDate = new DateTime(2021, 9, 25)
                 }
             };
 
