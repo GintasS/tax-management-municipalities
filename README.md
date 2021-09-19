@@ -32,6 +32,9 @@
 <summary>Table of Contents</summary>
 
 - [About](#about)
+- [Features](#features)
+- [Assumptions](#assumptions)
+- [Notes](#notes)
 - [Authors & contributors](#authors--contributors)
 - [Security](#security)
 - [License](#license)
@@ -43,27 +46,39 @@
 
 ## About
 
-> **[?]**
-> Provide general information about your project here.
-> What problem does it (intend to) solve?
-> What is the purpose of your project?
-> Why did you undertake it?
-> You don't have to answer all the questions - just the ones relevant to your project.
+This is a task for managing taxes for municipalities.
 
-I'm going to update this repository from https://github.com/microsoft/Git-Credential-Manager-Core/ or similar repositories.
+## Features
 
-<details>
-<summary>Screenshots</summary>
-<br>
+This project has a couple of features:
+- .NET 5
+- Some unit tests.
+- DDD
+- EF Core Database.
+- Swagger documentation for API.
+- API response code documentation.
+- Some validation for requests.
+- Various HTTP Status codes.
+- And more.
+- Resharper ran.
 
-> **[?]**
-> Please provide your screenshots here.
+## Assumptions
 
-|                               Home Page                               |                               Login Page                               |
-| :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
+The following assumptions were made:
+- Single tax can have only a single municipality.
+- Tax rate is a number that fits into a double.
+- "User can ask for a specific municipality tax by entering municipality name and date" - this will return all taxes for the given municipality, if e.g one is a yearly tax(2021-01-01 to 2021-12-31) and one is a daily tax, the program will return both, since they satisfy the date.
+- Dates are given in a YYYY.MM.DD format - we are not handling hours, minutes and so on.
+- Municipalities are unique, two "Copenhagen" municipalities can't exist.
 
-</details>
+## Notes
+
+Some notes:
+- Even though the task mentioned a producer service, I chose an API path, because: a) were there bonus points for exposing API functionality b) for me to test the code c) for reviewers to easily test the code. The app is split into services, so it's not really that hard to take the controller logic and apply as you wish :)
+- No explicit error handling is being done in the app.
+- No scheduling is being done (I don't really understood this requirement, why do we need to schedule at all, who is expecting this, if the user can grab taxes by the current date?).
+- This app is a little bit larger than I have expected, so it can be simplified.
+- I have made an initial drawing of services and entities in the draw.io diagram, check out ***tax-management.drawio***.
 
 ## Authors & contributors
 
