@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaxManagementAPI.Core.Interfaces;
 using TaxManagementAPI.Core.Models.Requests;
@@ -7,7 +8,7 @@ using TaxManagementAPI.Core.Models.Responses;
 namespace TaxManagementAPI.Core.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("taxes")]
     public class TaxesController : ControllerBase
     {
         private readonly ITaxService _taxService;
@@ -21,22 +22,31 @@ namespace TaxManagementAPI.Core.Controllers
 
         [ProducesResponseType(typeof(MunicipalityTaxesResponse), 200)]
         [ProducesResponseType(404)]
-        [Route("{municipalityName}/{queryDate:datetime}")]
+        [Route("/{municipalityName}/taxes/date/{queryDate:datetime}")]
         [HttpGet]
         public IActionResult GetAllTaxes(string municipalityName, DateTime queryDate)
         {
-            var municipalityExists = _municipalityService.MunicipalityExists(municipalityName);
-            if (municipalityExists == false)
+            var municipality = _municipalityService.FindMunicipality(municipalityName);
+            if (municipality == null)
             {
-                return NotFound("Tax Entity with the provided Municipality Name was not found");
+                return NotFound("Municipality with this name does not exist.");
             }
 
             var allTaxes = _taxService.GetAllTaxes(municipalityName, queryDate);
-            return Ok(allTaxes);
+            var response = new MunicipalityTaxesResponse
+            {
+                Date = queryDate,
+                MunicipalityName = municipalityName,
+                Taxes = allTaxes
+            };
+
+            return Ok(response);
         }
 
         [ProducesResponseType(typeof(UpdateSingleTaxResponse), 200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         [Route("{taxId:int}")]
         [HttpPatch]
         public IActionResult UpdateSingleTax(int taxId, UpdateSingleTaxRequest request)
@@ -44,32 +54,93 @@ namespace TaxManagementAPI.Core.Controllers
             var tax = _taxService.FindSingleTax(taxId);
             if (tax == null)
             {
-                return NotFound("Tax Entity with the provided TaxId was not found");
+                return NotFound("Tax Entity with the provided taxId does not exist.");
             }
 
-            // Create new municipality if needed.
-            var municipality = _municipalityService.CreateNewMunicipalityIfNotExists(request.Municipality.Name);
-
-            // Attach taxId from url and create new(or use existing one) municipality.
+            // Attach taxId to update tax entity's relationship in DB.
             request.TaxId = taxId;
-            request.Municipality = municipality;
 
-            var allTaxes = _taxService.UpdateSingleTax(request);
-            return Ok(allTaxes);
+            var updatedTax = _taxService.UpdateSingleTax(request);
+            if (updatedTax == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unknown error has occurred.");
+            }
+
+            var response = new UpdateSingleTaxResponse
+            {
+                MunicipalityModel = updatedTax.MunicipalityModel,
+                TaxDateModel = updatedTax.TaxDateModel,
+                TaxRateModel = updatedTax.TaxRateModel
+            };
+
+            return Ok(response);
         }
 
-        [ProducesResponseType(typeof(NewSingleTaxResponse), 200)]
+        [ProducesResponseType(typeof(NewSingleTaxResponse), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [Route("/{municipalityName}/taxes")]
         [HttpPost]
-        public IActionResult InsertSingleTax(NewSingleTaxRequest request)
+        public IActionResult InsertSingleTax(string municipalityName, NewSingleTaxRequest request)
         {
-            // Create new municipality if needed.
-            var municipality = _municipalityService.CreateNewMunicipalityIfNotExists(request.MunicipalityModel.MunicipalityName);
+            var municipality = _municipalityService.FindMunicipality(municipalityName);
+            if (municipality == null)
+            {
+                return NotFound("Municipality with this name does not exist.");
+            }
 
-            // Create new(or use existing one) municipality.
             request.Municipality = municipality;
 
-            var allTaxes = _taxService.InsertSingleTax(request);
-            return Ok(allTaxes);
+            var newTax = _taxService.InsertSingleTax(request);
+            if (newTax == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unknown error has occurred.");
+            }
+
+            var response = new NewSingleTaxResponse
+            {
+                TaxId = newTax.TaxId,
+                MunicipalityModel = newTax.MunicipalityModel,
+                TaxDateModel = newTax.TaxDateModel,
+                TaxRateModel = newTax.TaxRateModel
+            };
+
+            return CreatedAtAction("InsertSingleTax", response);
+        }
+
+        [ProducesResponseType(typeof(UpdateSingleTaxMunicipalityResponse), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        [Route("{taxId:int}/municipality/{newMunicipalityName}")]
+        [HttpPatch]
+        public IActionResult UpdateSingleTaxMunicipality(int taxId, string newMunicipalityName)
+        {
+            var tax = _taxService.FindSingleTax(taxId);
+            if (tax == null)
+            {
+                return NotFound("Tax Entity with the provided taxId does not exist.");
+            }
+
+            var municipality = _municipalityService.FindMunicipality(newMunicipalityName);
+            if (municipality == null)
+            {
+                return NotFound("Municipality with the newMunicipalityName does not exist.");
+            }
+
+            var updatedTax = _taxService.UpdateSingleTaxMunicipality(tax, municipality);
+            if (updatedTax == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unknown error has occurred.");
+            }
+            
+            var response = new UpdateSingleTaxMunicipalityResponse
+            {
+                TaxId = updatedTax.TaxId,
+                Municipality = updatedTax.Municipality
+            };
+
+            return Ok(response);
         }
     }
 }
