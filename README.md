@@ -36,7 +36,6 @@
 - [Assumptions](#assumptions)
 - [Notes](#notes)
 - [Authors & contributors](#authors--contributors)
-- [Security](#security)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
@@ -70,6 +69,8 @@ The following assumptions were made:
 - "User can ask for a specific municipality tax by entering municipality name and date" - this will return all taxes for the given municipality, if e.g one is a yearly tax(2021-01-01 to 2021-12-31) and one is a daily tax, the program will return both, since they satisfy the date.
 - Dates are given in a YYYY.MM.DD format - we are not handling hours, minutes and so on.
 - Municipalities are unique, two "Copenhagen" municipalities can't exist.
+- No extensive DateTime handling, no edge cases, leap years, different callendars or time zones. Everything is as simple as possible.
+- Only 4 types of taxes exist (yearly, monthly, weekly, daily).
 
 ## Notes
 
@@ -85,13 +86,6 @@ Some notes:
 The original setup of this repository is by [Gintautas Švedas](https://github.com/GintasS).
 
 For a full list of all authors and contributors, check [the contributor's page](https://github.com/GintasS/tax-management-municipalities/contributors).
-
-## Security
-
-Tax Management Municipalities follows good practices of security, but 100% security can't be granted in software.
-Tax Management Municipalities is provided **"as is"** without any **warranty**. Use at your own risk.
-
-_For more info, please refer to the [security](docs/SECURITY.md)._
 
 ## License
 
