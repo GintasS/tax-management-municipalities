@@ -73,23 +73,23 @@ namespace TaxManagementAPI.Core.Services
             };
         }
 
-        public bool MunicipalityExists(string municipalityName)
-        {
-            return _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName) != null;
-        }
-
         public UpdateSingleTaxResponse UpdateSingleTax(UpdateSingleTaxRequest request)
         {
             var taxEntity = GetAllTaxIncludes()
                 .SingleOrDefault(x => x.TaxId == request.TaxId);
-
             if (taxEntity == null)
             {
                 return null;
             }
 
+            var municipalityEntity = _context.MunicipalityEntities.SingleOrDefault(x => x.Name == request.Municipality.MunicipalityName);
+            if (municipalityEntity == null)
+            {
+                return null;
+            }
+
             taxEntity.Type = request.Type;
-            taxEntity.MunicipalityEntity.Name = request.MunicipalityName;
+            taxEntity.MunicipalityEntity = municipalityEntity;
             taxEntity.TaxDateEntity.FromDate = request.FromDate;
             taxEntity.TaxDateEntity.ToDate = request.ToDate;
             taxEntity.TaxRateEntity.Rate = request.Rate;

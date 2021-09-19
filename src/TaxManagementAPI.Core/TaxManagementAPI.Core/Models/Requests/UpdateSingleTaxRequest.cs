@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using TaxManagementAPI.Database.Entities;
 
 namespace TaxManagementAPI.Core.Models.Requests
 {
@@ -6,5 +7,7 @@ namespace TaxManagementAPI.Core.Models.Requests
     {
         [JsonIgnore]
         public int TaxId { get; set; }
+        [JsonIgnore]
+        public MunicipalityModel Municipality { get; set; }
     }
 }
