@@ -8,6 +8,6 @@ namespace TaxManagementAPI.Core.Models.Requests
         [JsonIgnore]
         public int TaxId { get; set; }
         [JsonIgnore]
-        public MunicipalityModel Municipality { get; set; }
+        public MunicipalityEntity Municipality { get; set; }
     }
 }
