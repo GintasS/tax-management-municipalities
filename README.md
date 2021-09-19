@@ -32,16 +32,6 @@
 <summary>Table of Contents</summary>
 
 - [About](#about)
-  - [Built With](#built-with)
-- Requirements(#requirements)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Roadmap](#roadmap)
-- [Support](#support)
-- [Project assistance](#project-assistance)
-- [Contributing](#contributing)
 - [Authors & contributors](#authors--contributors)
 - [Security](#security)
 - [License](#license)
@@ -74,65 +64,6 @@ I'm going to update this repository from https://github.com/microsoft/Git-Creden
 | <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
 
 </details>
-
-### Built With
-
-> **[?]**
-> Please provide the technologies that are used in the project.
-
-## Getting Started
-
-### Prerequisites
-
-> **[?]**
-> What are the project requirements/dependencies?
-
-### Installation
-
-> **[?]**
-> Proceed to describe how to install and get started with the project.
-
-## Usage
-
-> **[?]**
-> How does one go about using it?
-> Provide various use cases and code examples here.
-
-## Roadmap
-
-See the [open issues](https://github.com/GintasS/tax-management-municipalities/issues) for a list of proposed features (and known issues).
-
-- [Top Feature Requests](https://github.com/GintasS/tax-management-municipalities/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Top Bugs](https://github.com/GintasS/tax-management-municipalities/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Newest Bugs](https://github.com/GintasS/tax-management-municipalities/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
-
-## Support
-
-> **[?]**
-> Provide additional ways to contact the project maintainer/maintainers.
-
-Reach out to the maintainer at one of the following places:
-
-- [GitHub issues](https://github.com/GintasS/tax-management-municipalities/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
-- The email which is located [in GitHub profile](https://github.com/GintasS)
-
-## Project assistance
-
-If you want to say **thank you** or/and support active development of Tax Management Municipalities:
-
-- Add a [GitHub Star](https://github.com/GintasS/tax-management-municipalities) to the project.
-- Tweet about the Tax Management Municipalities on your Twitter.
-- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or personal blog.
-
-Together, we can make Tax Management Municipalities **better**!
-
-## Contributing
-
-First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly appreciated**.
-
-We have set up a separate document containing our [contribution guidelines](docs/CONTRIBUTING.md).
-
-Thank you for being involved!
 
 ## Authors & contributors
 
