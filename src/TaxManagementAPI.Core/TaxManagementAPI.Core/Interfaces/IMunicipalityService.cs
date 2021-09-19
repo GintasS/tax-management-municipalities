@@ -6,6 +6,6 @@ namespace TaxManagementAPI.Core.Interfaces
     public interface IMunicipalityService
     {
         public bool MunicipalityExists(string municipalityName);
-        public MunicipalityModel CreateNewMunicipalityIfNotExists(string municipalityName);
+        public MunicipalityEntity CreateNewMunicipalityIfNotExists(string municipalityName);
     }
 }

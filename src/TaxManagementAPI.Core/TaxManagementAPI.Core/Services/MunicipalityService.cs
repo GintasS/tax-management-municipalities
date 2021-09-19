@@ -18,23 +18,15 @@ namespace TaxManagementAPI.Core.Services
             _context = context;
         }
 
-        public MunicipalityModel CreateNewMunicipalityIfNotExists(string municipalityName)
+        public MunicipalityEntity CreateNewMunicipalityIfNotExists(string municipalityName)
         {
-            var municipality = _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName);
-
-            if (municipality == null)
+            var municipality = _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName) ??
+                               _context.MunicipalityEntities.Add(new MunicipalityEntity
             {
-                municipality = _context.MunicipalityEntities.Add(new MunicipalityEntity
-                {
-                    Name = municipalityName
-                }).Entity;
-            }
+                Name = municipalityName
+            }).Entity;
 
-            return new MunicipalityModel
-            {
-                MunicipalityId = municipality.MunicipalityId,
-                MunicipalityName = municipality.Name
-            };
+            return municipality;
         }
 
         public bool MunicipalityExists(string municipalityName)
