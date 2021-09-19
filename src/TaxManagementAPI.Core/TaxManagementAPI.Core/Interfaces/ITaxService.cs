@@ -1,13 +1,16 @@
-﻿using TaxManagementAPI.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using TaxManagementAPI.Core.Models;
 using TaxManagementAPI.Core.Models.Requests;
 using TaxManagementAPI.Core.Models.Responses;
 
 namespace TaxManagementAPI.Core.Interfaces
 {
-    interface ITaxService
+    public interface ITaxService
     {
-        public MunicipalityTaxesResponse GetAllTaxesForMunicipality(MunicipalityTaxesRequest request);
+        public MunicipalityTaxesResponse GetAllTaxes(string municipalityName, DateTime queryDate);
         public UpdateSingleTaxResponse UpdateSingleTax(UpdateSingleTaxRequest request);
-        public TaxModel FindSingletTax(string municipalityId);
+        public TaxModel FindSingleTax(int taxId);
+        public bool MunicipalityExists(string municipalityName);
     }
 }
