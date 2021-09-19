@@ -39,7 +39,7 @@ namespace TaxManagementAPI.Core.Controllers
             return Ok(allTaxes);
         }
 
-        [ProducesResponseType(typeof(MunicipalityTaxesResponse), 200)]
+        [ProducesResponseType(typeof(UpdateSingleTaxResponse), 200)]
         [ProducesResponseType(404)]
         [Route("{taxId}")]
         [HttpPatch]
@@ -52,7 +52,7 @@ namespace TaxManagementAPI.Core.Controllers
             }
 
             // Create new municipality if needed.
-            var municipality = _municipalityService.CreateNewMunicipalityIfNotExists(request.MunicipalityName);
+            var municipality = _municipalityService.CreateNewMunicipalityIfNotExists(request.Municipality.Name);
 
             // Attach taxId from url and create new(or use existing one) municipality.
             request.TaxId = taxId;
@@ -62,5 +62,18 @@ namespace TaxManagementAPI.Core.Controllers
             return Ok(allTaxes);
         }
 
+        [ProducesResponseType(typeof(NewSingleTaxResponse), 200)]
+        [HttpPost]
+        public IActionResult InsertSingleTax(NewSingleTaxRequest request)
+        {
+            // Create new municipality if needed.
+            var municipality = _municipalityService.CreateNewMunicipalityIfNotExists(request.MunicipalityModel.MunicipalityName);
+
+            // Create new(or use existing one) municipality.
+            request.Municipality = municipality;
+
+            var allTaxes = _taxService.InsertSingleTax(request);
+            return Ok(allTaxes);
+        }
     }
 }
