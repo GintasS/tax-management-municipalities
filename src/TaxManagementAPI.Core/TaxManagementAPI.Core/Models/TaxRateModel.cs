@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace TaxManagementAPI.Core.Models
 {
-    public class MunicipalityModel
+    public class TaxRateModel
     {
-        public string MunicipalityName { get; set; }
+        public double Rate { get; set; }
     }
 }

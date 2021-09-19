@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace TaxManagementAPI.Core.Models
 {
-    public class MunicipalityModel
+    public class TaxDateModel
     {
-        public string MunicipalityName { get; set; }
+        public DateTime FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
     }
 }
