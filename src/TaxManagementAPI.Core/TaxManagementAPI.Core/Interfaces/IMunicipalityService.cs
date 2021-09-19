@@ -4,7 +4,8 @@ namespace TaxManagementAPI.Core.Interfaces
 {
     public interface IMunicipalityService
     {
-        public bool MunicipalityExists(string municipalityName);
-        public MunicipalityEntity CreateNewMunicipalityIfNotExists(string municipalityName);
+        public MunicipalityEntity FindMunicipality(string municipalityName);
+        public MunicipalityEntity CreateMunicipality(string municipalityName);
+        public MunicipalityEntity UpdateMunicipalityName(MunicipalityEntity oldEntity, string newMunicipalityName);
     }
 }

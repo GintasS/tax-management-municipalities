@@ -14,20 +14,33 @@ namespace TaxManagementAPI.Core.Services
             _context = context;
         }
 
-        public MunicipalityEntity CreateNewMunicipalityIfNotExists(string municipalityName)
+        public MunicipalityEntity CreateMunicipality(string municipalityName)
         {
-            var municipality = _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName) ??
-                               _context.MunicipalityEntities.Add(new MunicipalityEntity
+            var municipality = _context.MunicipalityEntities.Add(new MunicipalityEntity
             {
                 Name = municipalityName
             }).Entity;
 
+            var numberOfChanges = _context.SaveChanges();
+            if (numberOfChanges != 1)
+            {
+                return null;
+            }
+
             return municipality;
         }
 
-        public bool MunicipalityExists(string municipalityName)
+        public MunicipalityEntity FindMunicipality(string municipalityName)
         {
-            return _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName) != null;
+            return _context.MunicipalityEntities.SingleOrDefault(x => x.Name == municipalityName);
+        }
+
+        public MunicipalityEntity UpdateMunicipalityName(MunicipalityEntity oldEntity, string newMunicipalityName)
+        {
+            oldEntity.Name = newMunicipalityName;
+
+            var numberOfChanges = _context.SaveChanges();
+            return numberOfChanges != 1 ? null : oldEntity;
         }
     }
 }

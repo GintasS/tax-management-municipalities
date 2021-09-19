@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -29,36 +30,13 @@ namespace TaxManagementAPI.Core.Services
                 .Include(x => x.TaxRateEntity);
         }
 
-        public TaxModel FindSingleTax(int taxId)
+        public TaxEntity FindSingleTax(int taxId)
         {
-            var taxEntity = GetAllTaxIncludes()
+            return GetAllTaxIncludes()
                 .SingleOrDefault(x => x.TaxId == taxId);
-
-            if (taxEntity == null)
-            {
-                return null;
-            }
-
-            return new TaxModel
-            {
-                Type = taxEntity.Type,
-                MunicipalityModel = new MunicipalityModel
-                {
-                    MunicipalityName = taxEntity.MunicipalityEntity.Name
-                },
-                TaxDateModel = new TaxDateModel
-                {
-                    FromDate = taxEntity.TaxDateEntity.FromDate,
-                    ToDate = taxEntity.TaxDateEntity.ToDate
-                },
-                TaxRateModel = new TaxRateModel
-                {
-                    Rate = taxEntity.TaxRateEntity.Rate
-                }
-            };
         }
 
-        public MunicipalityTaxesResponse GetAllTaxes(string municipalityName, DateTime queryDate)
+        public IEnumerable<TaxModel> GetAllTaxes(string municipalityName, DateTime queryDate)
         {
             var filteredTaxes = GetAllTaxIncludes()
                 .ToList()
@@ -82,15 +60,10 @@ namespace TaxManagementAPI.Core.Services
                     }
                 });
 
-            return new MunicipalityTaxesResponse
-            {
-                Date = queryDate,
-                MunicipalityName = municipalityName,
-                Taxes = filteredTaxes
-            };
+            return filteredTaxes;
         }
 
-        public UpdateSingleTaxResponse UpdateSingleTax(UpdateSingleTaxRequest request)
+        public TaxModel UpdateSingleTax(UpdateSingleTaxRequest request)
         {
             var taxEntity = GetAllTaxIncludes()
                 .SingleOrDefault(x => x.TaxId == request.TaxId);
@@ -101,14 +74,17 @@ namespace TaxManagementAPI.Core.Services
             }
 
             taxEntity.Type = request.Type;
-            taxEntity.MunicipalityEntity = request.Municipality;
             taxEntity.TaxDateEntity.FromDate = request.TaxDateModel.FromDate;
             taxEntity.TaxDateEntity.ToDate = request.TaxDateModel.ToDate;
             taxEntity.TaxRateEntity.Rate = request.TaxRateModel.Rate;
 
-            _context.SaveChanges();
+            var numberOfChanges = _context.SaveChanges();
+            if (numberOfChanges < 1 || numberOfChanges > 4)
+            {
+                return null;
+            }
 
-            return new UpdateSingleTaxResponse
+            return new TaxModel
             {
                 Type = taxEntity.Type,
                 MunicipalityModel = new MunicipalityModel
@@ -127,7 +103,7 @@ namespace TaxManagementAPI.Core.Services
             };
         }
 
-        public NewSingleTaxResponse InsertSingleTax(NewSingleTaxRequest request)
+        public UpdateSingleTaxModel InsertSingleTax(NewSingleTaxRequest request)
         {
             var newTax = _context.TaxEntities.Add(new TaxEntity
             {
@@ -144,9 +120,13 @@ namespace TaxManagementAPI.Core.Services
                 }
             }).Entity;
 
-            _context.SaveChanges();
+            var numberOfChanges = _context.SaveChanges();
+            if (numberOfChanges < 3)
+            {
+                return null;
+            }
 
-            return new NewSingleTaxResponse
+            return new UpdateSingleTaxModel
             {
                 TaxId = newTax.TaxId,
                 Type = newTax.Type,
@@ -164,6 +144,27 @@ namespace TaxManagementAPI.Core.Services
                     Rate = newTax.TaxRateEntity.Rate
                 }
             };
+        }
+
+        public UpdateSingleTaxMunicipalityModel UpdateSingleTaxMunicipality(TaxEntity taxEntity, MunicipalityEntity municipalityEntity)
+        {
+            taxEntity.MunicipalityEntity = municipalityEntity;
+
+            var numberOfChanges = _context.SaveChanges();
+            if (numberOfChanges < 0 || numberOfChanges > 1)
+            {
+                return null;
+            }
+            
+            return new UpdateSingleTaxMunicipalityModel
+            {
+                TaxId = taxEntity.TaxId,
+                Municipality = new MunicipalityModel
+                {
+                    MunicipalityName = taxEntity.MunicipalityEntity.Name
+                },
+            };
+
         }
     }
 }
