@@ -8,10 +8,15 @@ namespace TaxManagementAPI.Core.Extensions
         {
             if (toDate.HasValue == false)
             {
-                return fromDate >= date;
+                return fromDate == date;
             }
 
-            return fromDate >= date && date <= toDate;
+            if (fromDate > toDate.Value)
+            {
+                return false;
+            }
+
+            return date >= fromDate && date <= toDate.Value;
         }
     }
 }
