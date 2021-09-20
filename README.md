@@ -80,6 +80,7 @@ Some notes:
 - No scheduling is being done (I don't really understood this requirement, why do we need to schedule at all, who is expecting this, if the user can grab taxes by the current date?).
 - This app is a little bit larger than I have expected, so it can be simplified.
 - I have made an initial drawing of services and entities in the draw.io diagram, check out ***tax-management.drawio***.
+- ***2021-09-20 Note:*** - Fetching tax logic is not fully correct, it should only return a single tax per single day, instead of retrieving all valid taxes for that day. So I would need some mechanism of determining which tax is more important, if we have a few taxes that are valid for a single day. Could prioritize more specific tax first, in this order (daily, weekly, monthly, yearly).
 
 ## Authors & contributors
 
